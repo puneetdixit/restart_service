@@ -1,10 +1,9 @@
----
 - name: Restart service on Linux hosts
   ansible.builtin.service:
-    name: "{{ service_name }}"
+    name: "{{ service_name | default('rsyslog') }}"
     state: restarted
+  become: true
   changed_when: true
-  # Check for common Linux distributions (Debian, RedHat, Suse are families)
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
 - name: Wait for 5 seconds after Linux service restart
