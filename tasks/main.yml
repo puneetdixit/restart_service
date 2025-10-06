@@ -1,17 +1,26 @@
 ---
 - name: Restart service on Linux hosts
   ansible.builtin.service:
-    name: "{{ service_name }}" # Correctly uses generic variable
+    name: "{{ service_name }}"
     state: restarted
   changed_when: true
   # Check for common Linux distributions (Debian, RedHat, Suse are families)
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
+- name: Wait for 5 seconds after Linux service restart
+  ansible.builtin.pause:
+    seconds: 5
+  when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
+
 - name: Restart service on Windows hosts
   ansible.windows.win_service:
-    # Uses the generic variable, which will be set correctly for Windows hosts
     name: "{{ service_name }}" 
     state: restarted
   changed_when: true
   # Check for Windows operating system family
+  when: ansible_os_family == 'Windows'
+
+- name: Wait for 5 seconds after Windows service restart
+  ansible.builtin.pause:
+    seconds: 5
   when: ansible_os_family == 'Windows'
