@@ -1,8 +1,16 @@
-# restart_service/tasks/main.yml
 ---
-- name: Ensure the service is restarted
+- name: Restart service on Linux hosts
   ansible.builtin.service:
     name: "{{ iis_service }}"
     state: restarted
-  # Mark as changed to ensure the deployment tracking registers a change
   changed_when: true
+  # Check for common Linux distributions (Debian, RedHat, Suse are families)
+  when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
+
+- name: Restart service on Windows hosts
+  ansible.windows.win_service:
+    name: "{{ iis_service }}"
+    state: restarted
+  changed_when: true
+  # Check for Windows operating system family
+  when: ansible_os_family == 'Windows'
