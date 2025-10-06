@@ -1,0 +1,8 @@
+# restart_service/tasks/main.yml
+---
+- name: Ensure the service is restarted
+  ansible.builtin.service:
+    name: "{{ iis_service }}"
+    state: restarted
+  # Mark as changed to ensure the deployment tracking registers a change
+  changed_when: true
