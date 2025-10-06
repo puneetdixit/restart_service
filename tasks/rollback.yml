@@ -1,6 +1,14 @@
-# restart_service/tasks/rollback.yml
 ---
-- name: Rollback: Ensure service is running
+- name: Rollback - Ensure service is started on Linux hosts
   ansible.builtin.service:
     name: "{{ iis_service }}"
     state: started
+  changed_when: true
+  when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
+
+- name: Rollback - Ensure service is started on Windows hosts
+  ansible.windows.win_service:
+    name: "{{ iis_service }}"
+    state: started
+  changed_when: true
+  when: ansible_os_family == 'Windows'
