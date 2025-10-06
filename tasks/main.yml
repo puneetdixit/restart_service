@@ -1,20 +1,19 @@
 ---
-# Original file: roles/restart_service/tasks/main.yml (with fix)
+# roles/restart_service/tasks/main.yml (FINAL FIX)
 
 - name: Force restart {{ service_name | default('rsyslog') }} on Linux hosts
   ansible.builtin.service:
     name: "{{ service_name | default('rsyslog') }}"
     state: restarted
-    # FIX: Adding 'force: true' ensures the restart command runs unconditionally
-    # and not just as a reload, which should update the 'Active since' time.
     force: true 
   become: true
   changed_when: true
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
+# FIX: Replace ansible.builtin.pause with a non-interactive sleep command 
+# using the shell module to avoid the "Inappropriate ioctl for device" error.
 - name: Wait for 5 seconds after Linux service restart
-  ansible.builtin.pause:
-    seconds: 5
+  ansible.builtin.shell: /bin/sleep 5
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
 - name: Restart service on Windows hosts
@@ -24,7 +23,8 @@
   changed_when: true
   when: ansible_os_family == 'Windows'
 
+# FIX: Replace ansible.builtin.pause with a non-interactive sleep command 
+# using the win_command module on Windows.
 - name: Wait for 5 seconds after Windows service restart
-  ansible.builtin.pause:
-    seconds: 5
+  ansible.windows.win_command: timeout 5
   when: ansible_os_family == 'Windows'
