@@ -1,0 +1,19 @@
+# In your GitHub repository: restart_service/meta/main.yml
+---
+galaxy_info:
+  author: puneetdixit
+  description: A role to restart a service.
+  company: your_company
+  license: MIT
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Windows
+      versions:
+        - all
+
+  galaxy_tags:
+    - windows
+    - service
+    - iis
+dependencies: []
