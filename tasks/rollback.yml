@@ -1,0 +1,6 @@
+# restart_service/tasks/rollback.yml
+---
+- name: Rollback: Ensure service is running
+  ansible.builtin.service:
+    name: "{{ iis_service }}"
+    state: started
