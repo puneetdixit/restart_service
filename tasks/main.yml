@@ -1,3 +1,4 @@
+---
 - name: Restart service on Linux hosts
   ansible.builtin.service:
     name: "{{ service_name | default('rsyslog') }}"
@@ -6,9 +7,9 @@
   changed_when: true
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
-- name: Wait for 5 seconds after Linux service restart
-  ansible.builtin.pause:
-    seconds: 5
+- name: Wait for 5 seconds after Linux service restart (non-interactive)
+  ansible.builtin.wait_for:
+    timeout: 5
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
 - name: Restart service on Windows hosts
@@ -16,10 +17,9 @@
     name: "{{ service_name }}" 
     state: restarted
   changed_when: true
-  # Check for Windows operating system family
   when: ansible_os_family == 'Windows'
 
-- name: Wait for 5 seconds after Windows service restart
-  ansible.builtin.pause:
-    seconds: 5
+- name: Wait for 5 seconds after Windows service restart (non-interactive)
+  ansible.builtin.wait_for:
+    timeout: 5
   when: ansible_os_family == 'Windows'
