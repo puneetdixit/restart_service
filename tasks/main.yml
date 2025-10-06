@@ -1,7 +1,7 @@
 ---
 - name: Restart service on Linux hosts
   ansible.builtin.service:
-    name: "{{ iis_service }}"
+    name: "{{ service_name }}" # <-- USE GENERIC VARIABLE
     state: restarted
   changed_when: true
   # Check for common Linux distributions (Debian, RedHat, Suse are families)
@@ -9,7 +9,9 @@
 
 - name: Restart service on Windows hosts
   ansible.windows.win_service:
-    name: "{{ iis_service }}"
+    # Use the generic variable here too for consistency, 
+    # as the service_name can be set to the IIS service name in the outer playbook
+    name: "{{ service_name }}" # <-- USE GENERIC VARIABLE
     state: restarted
   changed_when: true
   # Check for Windows operating system family
