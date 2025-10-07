@@ -1,5 +1,9 @@
 ---
-# roles/restart_service/tasks/main.yml (FINAL FIX)
+# roles/restart_service/tasks/main.yml (UPDATED FIX)
+
+- name: DEBUG: Show service_name received by role
+  ansible.builtin.debug:
+    msg: "The service name passed to restart_service role is '{{ service_name }}'"
 
 - name: Force restart {{ service_name }} on Linux hosts
   ansible.builtin.service:
