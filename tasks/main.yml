@@ -1,9 +1,9 @@
 ---
 # roles/restart_service/tasks/main.yml (FINAL FIX)
 
-- name: Force restart {{ service_name | default('rsyslog') }} on Linux hosts
+- name: Force restart {{ service_name }} on Linux hosts
   ansible.builtin.service:
-    name: "{{ service_name | default('rsyslog') }}"
+    name: "{{ service_name }}"
     state: restarted
     force: true 
   become: true
