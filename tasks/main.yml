@@ -14,11 +14,6 @@
   changed_when: true
   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
-# # FIX: Replace ansible.builtin.pause with a non-interactive sleep command 
-# # using the shell module to avoid the "Inappropriate ioctl for device" error.
-# - name: Wait for 5 seconds after Linux service restart
-#   ansible.builtin.shell: /bin/sleep 5
-#   when: ansible_os_family in ['Debian', 'RedHat', 'Suse']
 
 - name: Restart service on Windows hosts
   ansible.windows.win_service:
@@ -27,8 +22,3 @@
   changed_when: true
   when: ansible_os_family == 'Windows'
 
-# # FIX: Replace ansible.builtin.pause with a non-interactive sleep command 
-# # using the win_command module on Windows.
-# - name: Wait for 5 seconds after Windows service restart
-#   ansible.windows.win_command: timeout 5
-#   when: ansible_os_family == 'Windows'
